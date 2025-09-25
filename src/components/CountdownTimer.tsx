@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import { Calendar, Clock } from 'lucide-react';
 
 const CountdownTimer = () => {
-  // Set harvest event date (you can modify this date)
-  const harvestDate = new Date('2025-03-15T10:00:00');
+  // Set harvest event date to December 10, 2025 at 10:00 AM
+  const harvestDate = new Date('2025-12-10T10:00:00');
   
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -46,7 +46,7 @@ const CountdownTimer = () => {
         <Clock className="text-blue-600 w-5 h-5" />
       </div>
       
-      <p className="text-blue-700 text-sm mb-4">March 15, 2025 • 10:00 AM</p>
+  <p className="text-blue-700 text-sm mb-4">December 10, 2025 • 10:00 AM</p>
       
       <div className="flex flex-wrap justify-center gap-4">
         {timeUnits.map((unit, index) => (

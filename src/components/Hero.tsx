@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import CountdownTimer from './CountdownTimer';
 import { Star, Heart, Users } from 'lucide-react';
 
 const Hero = () => {
@@ -50,14 +49,7 @@ const Hero = () => {
             A time of blessing, worship, and community at the Celestial Church of Christ.
           </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="mb-12"
-          >
-            <CountdownTimer />
-          </motion.div>
+          {/* Countdown moved to sit between Hero and About sections so it can overlap both */}
 
           <motion.div
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
@@ -65,22 +57,8 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.8 }}
           >
-            <motion.button
-              onClick={() => document.getElementById('donations')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-4 bg-blue-600 text-white rounded-full font-semibold text-lg shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Make a Donation
-            </motion.button>
-            <motion.button
-              onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-4 border-2 border-blue-600 text-blue-600 rounded-full font-semibold text-lg hover:bg-blue-600 hover:text-white transition-all duration-300 transform hover:scale-105"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Learn More
-            </motion.button>
+            
+          
           </motion.div>
         </motion.div>
       </div>

@@ -1,10 +1,10 @@
-import React, { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Youtube } from 'lucide-react';
 
 const Contact = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, threshold: 0.2 });
+  const isInView = useInView(ref, { once: true });
 
   const contactInfo = [
     {
@@ -116,74 +116,9 @@ const Contact = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100"
             >
-              <h3 className="text-2xl font-semibold text-blue-900 mb-6">Send Us a Message</h3>
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-blue-900 font-medium mb-2">First Name</label>
-                    <input
-                      type="text"
-                      className="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-blue-600 focus:outline-none transition-colors duration-300"
-                      placeholder="Your first name"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-blue-900 font-medium mb-2">Last Name</label>
-                    <input
-                      type="text"
-                      className="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-blue-600 focus:outline-none transition-colors duration-300"
-                      placeholder="Your last name"
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <label className="block text-blue-900 font-medium mb-2">Email</label>
-                  <input
-                    type="email"
-                    className="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-blue-600 focus:outline-none transition-colors duration-300"
-                    placeholder="your@email.com"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-blue-900 font-medium mb-2">Phone Number</label>
-                  <input
-                    type="tel"
-                    className="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-blue-600 focus:outline-none transition-colors duration-300"
-                    placeholder="+234 XXX XXX XXXX"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-blue-900 font-medium mb-2">Subject</label>
-                  <select className="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-blue-600 focus:outline-none transition-colors duration-300">
-                    <option value="">Select a subject</option>
-                    <option value="harvest">Harvest Festival Inquiry</option>
-                    <option value="service">Service Information</option>
-                    <option value="donation">Donation Question</option>
-                    <option value="general">General Inquiry</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-blue-900 font-medium mb-2">Message</label>
-                  <textarea
-                    rows={5}
-                    className="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-blue-600 focus:outline-none transition-colors duration-300 resize-none"
-                    placeholder="Your message..."
-                  ></textarea>
-                </div>
-                
-                <motion.button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 px-8 rounded-lg font-semibold text-lg shadow-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Send Message
-                </motion.button>
-              </form>
+                <h3 className="text-2xl font-semibold text-blue-900 mb-6">Send Us a Message</h3>
+                {/* Controlled contact form */}
+                <ContactForm />
             </motion.div>
           </div>
         </div>
@@ -216,3 +151,131 @@ const Contact = () => {
 };
 
 export default Contact;
+
+/* ContactForm component placed here to keep file self-contained. */
+function ContactForm() {
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [subject, setSubject] = useState('');
+  const [message, setMessage] = useState('');
+  const [sending, setSending] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const validate = () => {
+    if (!fullName.trim()) return 'Please enter your full name';
+    if (!message.trim()) return 'Please enter a message';
+    if (!email.trim() && !phone.trim()) return 'Please provide an email or phone number';
+    return '';
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const err = validate();
+    if (err) {
+      alert(err);
+      return;
+    }
+
+    setSending(true);
+    // Simulate send delay
+    await new Promise((r) => setTimeout(r, 900));
+
+    // Here you'd POST to your API. We simulate success.
+    setSending(false);
+    setSuccess(true);
+    // Clear form
+    setFullName('');
+    setEmail('');
+    setPhone('');
+    setSubject('');
+    setMessage('');
+  };
+
+  if (success) {
+    return (
+      <div className="p-6 bg-white rounded-lg text-center">
+        <h4 className="text-xl font-semibold text-blue-900 mb-2">Message Sent</h4>
+        <p className="text-blue-700 mb-4">Thank you — we received your message and will be in touch shortly.</p>
+        <button
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg"
+          onClick={() => setSuccess(false)}
+        >
+          Send Another Message
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <form className="space-y-6" onSubmit={handleSubmit}>
+      <div>
+        <label className="block text-blue-900 font-medium mb-2">Full Name</label>
+        <input
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+          type="text"
+          className="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-blue-600 focus:outline-none transition-colors duration-300"
+          placeholder="Your full name"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label className="block text-blue-900 font-medium mb-2">Email</label>
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            className="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-blue-600 focus:outline-none transition-colors duration-300"
+            placeholder="your@email.com"
+          />
+        </div>
+        <div>
+          <label className="block text-blue-900 font-medium mb-2">Phone Number</label>
+          <input
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            type="tel"
+            className="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-blue-600 focus:outline-none transition-colors duration-300"
+            placeholder="+234 XXX XXX XXXX"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-blue-900 font-medium mb-2">Subject</label>
+        <select
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
+          className="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-blue-600 focus:outline-none transition-colors duration-300"
+        >
+          <option value="">Select a subject</option>
+          <option value="harvest">Harvest Festival Inquiry</option>
+          <option value="service">Service Information</option>
+          <option value="donation">Donation Question</option>
+          <option value="general">General Inquiry</option>
+        </select>
+      </div>
+
+      <div>
+        <label className="block text-blue-900 font-medium mb-2">Message</label>
+        <textarea
+          rows={5}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-blue-600 focus:outline-none transition-colors duration-300 resize-none"
+          placeholder="Your message..."
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        disabled={sending}
+        className={`w-full ${sending ? 'bg-blue-400' : 'bg-gradient-to-r from-blue-600 to-blue-700'} text-white py-4 px-8 rounded-lg font-semibold text-lg shadow-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105`}
+      >
+        {sending ? 'Sending...' : 'Send Message'}
+      </button>
+    </form>
+  );
+}

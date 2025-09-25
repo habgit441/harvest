@@ -20,7 +20,7 @@ const Navigation = () => {
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
     { name: 'Services', href: '#services' },
-    { name: 'Gallery', href: '#gallery' },
+    { name: 'Gallery', href: '/gallery' },
     { name: 'Donations', href: '#donations' },
     { name: 'Contact', href: '#contact' }
   ];
@@ -31,6 +31,10 @@ const Navigation = () => {
       element.scrollIntoView({ behavior: 'smooth' });
     }
     setIsOpen(false);
+  };
+
+  const handleLogoClick = () => {
+    scrollToSection('#home');
   };
 
   return (
@@ -47,25 +51,42 @@ const Navigation = () => {
             className="flex items-center space-x-2"
             whileHover={{ scale: 1.05 }}
           >
-            <Church className="h-8 w-8 text-blue-600" />
-            <div className="flex flex-col">
-              <span className="font-bold text-blue-900 text-lg">Isheri Cathedral</span>
-              <span className="text-blue-600 text-xs">Celestial Church of Christ</span>
-            </div>
+            {/* Logo - uses public/Images/Logo.jpg */}
+            <button
+              onClick={handleLogoClick}
+              aria-label="Go to home"
+              className="flex items-center focus:outline-none"
+            >
+              <img
+                src="/Images/Logo.png"
+                alt="Harvest logo"
+                className="h-8 w-auto sm:h-10 object-contain"
+              />
+            </button>
           </motion.div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-8">
             {navItems.map((item) => (
-              <motion.button
-                key={item.name}
-                onClick={() => scrollToSection(item.href)}
-                className="text-blue-900 hover:text-blue-600 transition-colors duration-200 font-medium"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {item.name}
-              </motion.button>
+              item.href === '/gallery' ? (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className="text-blue-900 hover:text-blue-600 transition-colors duration-200 font-medium"
+                >
+                  {item.name}
+                </Link>
+              ) : (
+                <motion.button
+                  key={item.name}
+                  onClick={() => scrollToSection(item.href)}
+                  className="text-blue-900 hover:text-blue-600 transition-colors duration-200 font-medium"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {item.name}
+                </motion.button>
+              )
             ))}
           </div>
 
