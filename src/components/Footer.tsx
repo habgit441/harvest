@@ -1,16 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import {
-  Church,
-  Heart,
-  Star,
-  Facebook,
-  Instagram,
-  Youtube,
-  Mail,
-  Phone,
-  MapPin,
-} from "lucide-react";
+import { Heart, Star, Facebook, Instagram, Youtube, Mail, Phone, MapPin } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -48,12 +38,10 @@ const Footer = () => {
               transition={{ duration: 0.6 }}
             >
               <div className="flex items-center space-x-3 mb-4">
-                <Church className="h-10 w-10 text-blue-300" />
+                <img src="/Images/Logo.png" alt="Isheri Cathedral logo" className="h-10 w-10 object-contain" />
                 <div>
                   <h3 className="text-2xl font-bold">Isheri Cathedral</h3>
-                  <p className="text-blue-300 text-sm">
-                    Celestial Church of Christ
-                  </p>
+                  <p className="text-blue-300 text-sm">Celestial Church of Christ</p>
                 </div>
               </div>
               <p className="text-blue-100 leading-relaxed mb-6 max-w-md text-sm">

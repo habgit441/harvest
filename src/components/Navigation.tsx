@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Church } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -25,10 +25,36 @@ const Navigation = () => {
     { name: 'Contact', href: '#contact' }
   ];
 
+  const navigate = useNavigate();
+
   const scrollToSection = (href: string) => {
+    // If the href is an in-page anchor, try to scroll; if not found (we're on another route) navigate to '/' then scroll
+    if (href.startsWith('#')) {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+        setIsOpen(false);
+        return;
+      }
+
+      // Element not found on this page - navigate to home and attempt to scroll after navigation
+      if (location.pathname !== '/') {
+        navigate('/');
+        setTimeout(() => {
+          const el = document.querySelector(href);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 250);
+      }
+      setIsOpen(false);
+      return;
+    }
+
+    // Non-anchor links: try to scroll to element or navigate if it's a route
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+    } else if (href === '/' && location.pathname !== '/') {
+      navigate('/');
     }
     setIsOpen(false);
   };
