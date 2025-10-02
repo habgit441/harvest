@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import { Calendar, Clock } from 'lucide-react';
 
 const CountdownTimer = () => {
-  // Set harvest event date to December 10, 2025 at 10:00 AM
-  const harvestDate = new Date('2025-12-10T10:00:00');
+  // Set harvest event date to Sunday, November 30, 2025 at 10:00 AM
+  const harvestDate = new Date('2025-11-30T10:00:00');
   
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -39,14 +39,24 @@ const CountdownTimer = () => {
   ];
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-blue-100">
+    <motion.div 
+      className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 mt-20 border border-blue-100"
+      animate={{ 
+        boxShadow: [
+          "0px 0px 10px rgba(59,130,246,0.6)", 
+          "0px 0px 20px rgba(59,130,246,0.9)", 
+          "0px 0px 10px rgba(59,130,246,0.6)"
+        ] 
+      }}
+      transition={{ repeat: Infinity, duration: 2 }}
+    >
       <div className="flex items-center justify-center gap-2 mb-4">
         <Calendar className="text-blue-600 w-5 h-5" />
         <h3 className="text-blue-900 font-semibold text-lg">Harvest Festival Countdown</h3>
         <Clock className="text-blue-600 w-5 h-5" />
       </div>
       
-  <p className="text-blue-700 text-sm mb-4">December 10, 2025 • 10:00 AM</p>
+      <p className="text-blue-700 text-sm mb-4">November 30, 2025 • 10:00 AM (Sunday)</p>
       
       <div className="flex flex-wrap justify-center gap-4">
         {timeUnits.map((unit, index) => (
@@ -70,7 +80,7 @@ const CountdownTimer = () => {
           </motion.div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -1,65 +1,126 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Star, Heart, Users } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 const Hero = () => {
+  // Typing effect state
+  const [displayedText, setDisplayedText] = useState("");
+  const fullText = "45th Adult Harvest – Thanksgiving Service";
+
+  // Verse rotation
+  const verses = [
+    "Psalm 23:6 – Surely goodness and mercy shall follow me all the days of my life",
+    "Psalm 100:4 – Enter his gates with thanksgiving and his courts with praise",
+    "James 1:17 – Every good and perfect gift is from above",
+    "Psalm 118:24 – This is the day the Lord has made; let us rejoice and be glad in it"
+  ];
+  const [verseIndex, setVerseIndex] = useState(0);
+
+  // Typing effect logic
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      setDisplayedText(fullText.slice(0, i + 1));
+      i++;
+      if (i === fullText.length) clearInterval(interval);
+    }, 80); // typing speed
+    return () => clearInterval(interval);
+  }, []);
+
+  // Verse rotation logic
+  useEffect(() => {
+    const verseTimer = setInterval(() => {
+      setVerseIndex((prev) => (prev + 1) % verses.length);
+    }, 5000); // change every 5s
+    return () => clearInterval(verseTimer);
+  }, []);
+
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 overflow-hidden">
-      {/* Background Animation */}
-      <div className="absolute inset-0">
-        <div className="absolute top-10 left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div className="absolute top-0 right-4 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-white to-blue-200 overflow-hidden"
+    >
+      {/* Animated Background Bubbles */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-40 h-40 bg-blue-300 rounded-full mix-blend-multiply filter blur-2xl opacity-40"
+            initial={{
+              x: Math.random() * window.innerWidth,
+              y: Math.random() * window.innerHeight,
+              scale: 0.5 + Math.random(),
+              opacity: 0.4,
+            }}
+            animate={{
+              y: [
+                Math.random() * 300,
+                Math.random() * -300,
+                Math.random() * 300,
+              ],
+              x: [
+                Math.random() * 150,
+                Math.random() * -150,
+                Math.random() * 150,
+              ],
+              opacity: [0.3, 0.6, 0.4],
+              scale: [0.8, 1.3, 0.9],
+            }}
+            transition={{
+              duration: 8 + Math.random() * 5,
+              repeat: Infinity,
+              repeatType: "mirror",
+              ease: "easeInOut",
+            }}
+          />
+        ))}
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
+      {/* Content */}
+      <div className="relative z-10 max-w-5xl mx-auto px-6 text-center pt-10">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          {/* Floating Icons */}
-          <div className="absolute top-0 left-1/4 animate-bounce">
-            <Star className="text-blue-400 w-6 h-6" />
-          </div>
-          <div className="absolute top-10 right-1/4 animate-bounce animation-delay-1000">
-            <Heart className="text-blue-400 w-8 h-8" />
-          </div>
-          <div className="absolute bottom-20 left-1/3 animate-bounce animation-delay-2000">
-            <Users className="text-blue-400 w-7 h-7" />
-          </div>
-
-          <motion.h1
-            className="text-4xl md:text-6xl lg:text-7xl font-bold text-blue-900 mb-6 leading-tight"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
+          {/* Harvest Badge with typing effect */}
+          <motion.div
+            className="inline-block bg-gradient-to-r from-blue-500 via-blue-600 to-blue-800 text-white font-extrabold text-lg md:text-xl rounded-full px-6 py-3 shadow-xl border-4 border-white mb-6 whitespace-nowrap overflow-hidden"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
           >
-            Isheri Cathedral
-            <span className="block text-blue-600">Harvest Festival</span>
+            {displayedText}
+            <span className="animate-pulse">|</span> {/* cursor effect */}
+          </motion.div>
+
+          {/* Title */}
+          <motion.h1
+            className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-blue-900 mb-4 leading-tight drop-shadow-lg"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+          >
+            Harvest of{" "}
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
+              Goodness
+            </span>{" "}
+            &{" "}
+            <span className="bg-gradient-to-r from-green-600 to-teal-500 text-transparent bg-clip-text">
+              Mercy
+            </span>
           </motion.h1>
 
+          {/* Bible Verse Rotating */}
           <motion.p
-            className="text-lg md:text-xl text-blue-700 mb-8 max-w-3xl mx-auto"
+            key={verseIndex} // re-triggers animation when verse changes
+            className="text-lg md:text-xl text-blue-700 mb-6 italic"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
           >
-            Join us in celebration and thanksgiving as we gather for our annual harvest festival. 
-            A time of blessing, worship, and community at the Celestial Church of Christ.
+            {verses[verseIndex]}
           </motion.p>
-
-          {/* Countdown moved to sit between Hero and About sections so it can overlap both */}
-
-          <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
-          >
-            
-          
-          </motion.div>
         </motion.div>
       </div>
 

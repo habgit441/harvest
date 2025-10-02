@@ -27,7 +27,7 @@ const Contact = () => {
       title: 'Service Times',
       details: ['Sundays: 8:00 AM - 12:00 PM', 'Wednesdays: 6:00 PM - 8:00 PM', 'Fridays: 6:00 PM - 8:00 PM']
     }
-  ];
+  ];3
 
   const socialLinks = [
     { icon: Facebook, name: 'Facebook', href: '#' },
